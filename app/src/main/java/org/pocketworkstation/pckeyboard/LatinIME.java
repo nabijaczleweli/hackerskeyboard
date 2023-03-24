@@ -720,7 +720,15 @@ public class LatinIME extends InputMethodService implements
     		}
     	}
     }
-    
+
+    @Override
+    public void onStartInput(EditorInfo attribute, boolean restarting) {
+        super.onStartInput(attribute, restarting);
+        // setCandidatesViewShown(true);
+        setCandidatesViewShownInternal(true, false);
+        super.setCandidatesViewShown(true);
+    }
+
     @Override
     public View onCreateCandidatesView() {
         //Log.i(TAG, "onCreateCandidatesView(), mCandidateViewContainer=" + mCandidateViewContainer);
@@ -734,6 +742,11 @@ public class LatinIME extends InputMethodService implements
             mCandidateView.setService(this);
             setCandidatesView(mCandidateViewContainer);
         }
+        // setCandidatesViewShown(true);
+        setCandidatesViewShownInternal(true, false);
+        super.setCandidatesViewShown(true);
+        // setExtractViewShown(true); // (onEvaluateFullscreenMode());
+        setExtractViewShown(onEvaluateFullscreenMode());
         return mCandidateViewContainer;
     }
 
