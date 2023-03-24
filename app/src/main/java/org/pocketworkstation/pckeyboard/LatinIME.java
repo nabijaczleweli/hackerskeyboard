@@ -1491,7 +1491,7 @@ public class LatinIME extends InputMethodService implements
             || pkg.equalsIgnoreCase("org.woltage.irssiconnectbot")
             || pkg.equalsIgnoreCase("com.pslib.connectbot")
             || pkg.equalsIgnoreCase("sk.vx.connectbot")
-        ) && ei.inputType == 0); // FIXME
+        ) && (ei.inputType == 0 || ei.inputType == 0x80090)); // FIXME
     }
 
     private int getMetaState(boolean shifted) {
