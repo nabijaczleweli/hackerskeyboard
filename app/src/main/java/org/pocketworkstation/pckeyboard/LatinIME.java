@@ -1847,9 +1847,23 @@ public class LatinIME extends InputMethodService implements
                             sendModifiedKeyDownUp(code, shifted);
                             if (isChordingAlt) setModAlt(true);
                         } else {
+                            StringBuilder sb = new StringBuilder(1024);
+                            //sb.append(getResources()
+                            //        .getString(R.string.toast_ctrl_a_override_info));
+                            sb.append("C-A.");
+                            EditorInfo ei = getCurrentInputEditorInfo();
+                            String pkg = ei.packageName;
+                            if (ei == null || pkg == null) {
+                                sb.append(" ei null or pkg null");
+                            } else {
+                                sb.append(" pkg=");
+                                sb.append(pkg);
+                                sb.append(" ei.inputType=");
+                                sb.append(String.format("%02Xh", ei.inputType));
+                            }
+                            // sb.append(" ecm was here!!!");
                             Toast.makeText(getApplicationContext(),
-                                getResources()
-                                .getString(R.string.toast_ctrl_a_override_info), Toast.LENGTH_LONG)
+                                sb, Toast.LENGTH_LONG)
                                 .show();
                             // Clear the Ctrl modifier (and others)
                             sendModifierKeysDown(shifted);
