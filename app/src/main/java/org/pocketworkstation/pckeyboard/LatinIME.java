@@ -727,7 +727,9 @@ public class LatinIME extends InputMethodService implements
         // setCandidatesViewShown(true);
         setCandidatesViewShownInternal(true, false);
         super.setCandidatesViewShown(true);
-        hideWindow();
+        if (!restarting) {
+            hideWindow();
+        }
     }
 
     @Override
