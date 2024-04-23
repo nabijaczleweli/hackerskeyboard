@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+        <issue id="MissingTranslation" severity="ignore" />
+        <issue id="ExtraTranslation" severity="ignore" />
+
+        <!-- Error: Google Play requires that apps target API level 33 or higher. -->
+        <issue id="ExpiredTargetSdkVersion" severity="ignore" />
+
+
+        <issue id="NamespaceTypo" severity="ignore" />
+        <issue id="WrongCall" severity="ignore" />
+        <issue id="ResAuto" severity="ignore" />
+</lint>
