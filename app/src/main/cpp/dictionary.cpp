@@ -21,7 +21,7 @@
 #include <string.h>
 //#define LOG_TAG "dictionary.cpp"
 //#include <cutils/log.h>
-#define LOGI
+#define LOGI(...)
 
 #include "dictionary.h"
 #include "basechars.h"
