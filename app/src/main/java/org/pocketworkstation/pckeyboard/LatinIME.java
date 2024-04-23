@@ -180,7 +180,7 @@ public class LatinIME extends InputMethodService implements
     private boolean mEnableVoiceButton;
     private CharSequence mBestWord;
     private boolean mPredictionOnForMode;
-    private boolean mPredictionOnPref;    
+    private boolean mPredictionOnPref;
     private boolean mCompletionOn;
     private boolean mHasDictionary;
     private boolean mAutoSpace;
@@ -222,9 +222,9 @@ public class LatinIME extends InputMethodService implements
     private String mVolUpAction;
     private String mVolDownAction;
 
-    public static final GlobalKeyboardSettings sKeyboardSettings = new GlobalKeyboardSettings(); 
+    public static final GlobalKeyboardSettings sKeyboardSettings = new GlobalKeyboardSettings();
     static LatinIME sInstance;
-    
+
     private int mHeightPortrait;
     private int mHeightLandscape;
     private int mNumKeyboardModes = 3;
@@ -281,7 +281,7 @@ public class LatinIME extends InputMethodService implements
     private Map<String, List<CharSequence>> mWordToSuggestions = new HashMap<String, List<CharSequence>>();
 
     private ArrayList<WordAlternatives> mWordHistory = new ArrayList<WordAlternatives>();
-    
+
     private PluginManager mPluginManager;
     private NotificationReceiver mNotificationReceiver;
 
@@ -402,7 +402,7 @@ public class LatinIME extends InputMethodService implements
         sKeyboardSettings.initPrefs(prefs, res);
 
         mVoiceRecognitionTrigger = new VoiceRecognitionTrigger(this);
-        
+
         updateKeyboardOptions();
 
         PluginManager.getPluginDictionaries(getApplicationContext());
@@ -442,7 +442,7 @@ public class LatinIME extends InputMethodService implements
         if (mNumKeyboardModes == 2 && num == 1) num = 2; // skip "compact". FIXME!
         return num;
     }
-    
+
     private void updateKeyboardOptions() {
         //Log.i(TAG, "setFullKeyboardOptions " + fullInPortrait + " " + heightPercentPortrait + " " + heightPercentLandscape);
         boolean isPortrait = isPortrait();
@@ -490,7 +490,7 @@ public class LatinIME extends InputMethodService implements
             final IntentFilter pFilter = new IntentFilter(NotificationReceiver.ACTION_SHOW);
             pFilter.addAction(NotificationReceiver.ACTION_SETTINGS);
             registerReceiver(mNotificationReceiver, pFilter);
-            
+
             Intent notificationIntent = new Intent(NotificationReceiver.ACTION_SHOW);
             PendingIntent contentIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, notificationIntent, 0);
             //PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
@@ -540,7 +540,7 @@ public class LatinIME extends InputMethodService implements
             mNotificationReceiver = null;
         }
     }
-    
+
     private boolean isPortrait() {
         return (mOrientation == Configuration.ORIENTATION_PORTRAIT);
     }
@@ -708,7 +708,7 @@ public class LatinIME extends InputMethodService implements
     public AbstractInputMethodImpl onCreateInputMethodInterface() {
     	return new MyInputMethodImpl();
     }
-    
+
     IBinder mToken;
     public class MyInputMethodImpl extends InputMethodImpl {
     	@Override
@@ -773,7 +773,7 @@ public class LatinIME extends InputMethodService implements
         mDeleteCount = 0;
         mJustAddedAutoSpace = false;
     }
-    
+
     @Override
     public void onStartInputView(EditorInfo attribute, boolean restarting) {
         sKeyboardSettings.editorPackageName = attribute.packageName;
@@ -818,7 +818,7 @@ public class LatinIME extends InputMethodService implements
         if (mVoiceRecognitionTrigger != null) {
             mVoiceRecognitionTrigger.onStartInputView();
         }
-        
+
         mInputTypeNoAutoCorrect = false;
         mPredictionOnForMode = false;
         mCompletionOn = false;
@@ -1175,7 +1175,7 @@ public class LatinIME extends InputMethodService implements
     	//Log.i(TAG, "OnEvaluateInputViewShown, parent=" + parent + " + " wanted=" + wanted);
     	return wanted;
     }
-    
+
     @Override
     public void setCandidatesViewShown(boolean shown) {
         setCandidatesViewShownInternal(shown, true /* needsInputViewShown */);
@@ -1332,7 +1332,7 @@ public class LatinIME extends InputMethodService implements
         }
         if (ic != null) {
             // Clear modifiers other than shift, to avoid them getting stuck
-            int states = 
+            int states =
                 KeyEvent.META_FUNCTION_ON
                 | KeyEvent.META_ALT_MASK
                 | KeyEvent.META_CTRL_MASK
@@ -1668,7 +1668,7 @@ public class LatinIME extends InputMethodService implements
 
         // TODO(klausw): properly support xterm sequences for Ctrl/Alt modifiers?
         // See http://slackware.osuosl.org/slackware-12.0/source/l/ncurses/xterm.terminfo
-        // and the output of "$ infocmp -1L". Support multiple sets, and optional 
+        // and the output of "$ infocmp -1L". Support multiple sets, and optional
         // true numpad keys?
         if (ESC_SEQUENCES == null) {
             ESC_SEQUENCES = new HashMap<Integer, String>();
@@ -1916,7 +1916,7 @@ public class LatinIME extends InputMethodService implements
         // Default handling for anything else, including unmodified ENTER and SPACE.
         sendKeyChar(ch);
     }
-    
+
     private void sendTab() {
         InputConnection ic = getCurrentInputConnection();
         boolean tabHack = isConnectbot() && mConnectbotTabHack;
@@ -2273,7 +2273,7 @@ public class LatinIME extends InputMethodService implements
     private static int getCapsOrShiftLockState() {
         return sKeyboardSettings.capsLock ? Keyboard.SHIFT_CAPS_LOCKED : Keyboard.SHIFT_LOCKED;
     }
-    
+
     // Rotate through shift states by successively pressing and releasing the Shift key.
     private static int nextShiftState(int prevState, boolean allowCapsLock) {
         if (allowCapsLock) {
@@ -2494,7 +2494,7 @@ public class LatinIME extends InputMethodService implements
     private void switchToKeyboardView() {
         mHandler.post(new Runnable() {
             public void run() {
-                LatinKeyboardView view = mKeyboardSwitcher.getInputView(); 
+                LatinKeyboardView view = mKeyboardSwitcher.getInputView();
                 if (view != null) {
                     ViewParent p = view.getParent();
                     if (p != null && p instanceof ViewGroup) {
@@ -2536,7 +2536,7 @@ public class LatinIME extends InputMethodService implements
         if ((mSuggest == null || !isPredictionOn())) {
             return;
         }
-        
+
         if (!mPredicting) {
             setNextSuggestions();
             return;
@@ -2962,7 +2962,7 @@ public class LatinIME extends InputMethodService implements
         Log.i("PCKeyboard", "onSharedPreferenceChanged()");
         boolean needReload = false;
         Resources res = getResources();
-        
+
         // Apply globally handled shared prefs
         sKeyboardSettings.sharedPreferenceChanged(sharedPreferences, key);
         if (sKeyboardSettings.hasFlag(GlobalKeyboardSettings.FLAG_PREF_NEED_RELOAD)) {
@@ -3088,7 +3088,7 @@ public class LatinIME extends InputMethodService implements
                 mSuggestionForceOff = true;
             } else if (mSuggestionForceOff) {
                 mSuggestionForceOn = true;
-                mSuggestionForceOff = false;                
+                mSuggestionForceOff = false;
             } else if (isPredictionWanted()) {
                 mSuggestionForceOff = true;
             } else {
@@ -3115,7 +3115,7 @@ public class LatinIME extends InputMethodService implements
                 if (mHeightPortrait > 70) mHeightPortrait = 70;
             } else {
                 mHeightLandscape += 5;
-                if (mHeightLandscape > 70) mHeightLandscape = 70;                
+                if (mHeightLandscape > 70) mHeightLandscape = 70;
             }
             toggleLanguage(true, true);
         } else if (action.equals("height_down")) {
@@ -3124,7 +3124,7 @@ public class LatinIME extends InputMethodService implements
                 if (mHeightPortrait < 15) mHeightPortrait = 15;
             } else {
                 mHeightLandscape -= 5;
-                if (mHeightLandscape < 15) mHeightLandscape = 15;                
+                if (mHeightLandscape < 15) mHeightLandscape = 15;
             }
             toggleLanguage(true, true);
         } else {
@@ -3270,18 +3270,18 @@ public class LatinIME extends InputMethodService implements
 
     private float getKeyClickVolume() {
         if (mAudioManager == null) return 0.0f; // shouldn't happen
-        
+
         // The volume calculations are poorly documented, this is the closest I could
         // find for explaining volume conversions:
         // http://developer.android.com/reference/android/media/MediaPlayer.html#setAuxEffectSendLevel(float)
         //
         //   Note that the passed level value is a raw scalar. UI controls should be scaled logarithmically:
-        //   the gain applied by audio framework ranges from -72dB to 0dB, so an appropriate conversion 
+        //   the gain applied by audio framework ranges from -72dB to 0dB, so an appropriate conversion
         //   from linear UI input x to level is: x == 0 -> level = 0 0 < x <= R -> level = 10^(72*(x-R)/20/R)
-        
+
         int method = sKeyboardSettings.keyClickMethod; // See click_method_values in strings.xml
         if (method == 0) return FX_VOLUME;
-        
+
         float targetVol = sKeyboardSettings.keyClickVolume;
 
         if (method > 1) {
@@ -3303,7 +3303,7 @@ public class LatinIME extends InputMethodService implements
         //Log.i(TAG, "getKeyClickVolume absolute, target=" + targetVol + " amp=" + vol);
         return vol;
     }
-    
+
     private void playKeyClick(int primaryCode) {
         // if mAudioManager is null, we don't have the ringer state yet
         // mAudioManager will be set by updateRingerMode
@@ -3351,7 +3351,7 @@ public class LatinIME extends InputMethodService implements
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
         }
     }
-    
+
     /* package */void promoteToUserDictionary(String word, int frequency) {
         if (mUserDictionary.isValidWord(word))
             return;
