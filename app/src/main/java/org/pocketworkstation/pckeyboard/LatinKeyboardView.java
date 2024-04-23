@@ -52,7 +52,7 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
     static final int KEYCODE_NEXT_LANGUAGE = -104;
     static final int KEYCODE_PREV_LANGUAGE = -105;
     static final int KEYCODE_COMPOSE = -10024;
-    
+
 	// The following keycodes match (negative) KeyEvent keycodes.
     // Would be better to use the real KeyEvent values, but many
     // don't exist prior to the Honeycomb API (level 11).
@@ -106,7 +106,7 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
     private boolean mDroppingEvents;
     /**
      * Whether multi-touch disambiguation needs to be disabled for any reason. There are 2 reasons
-     * for this to happen - (1) if a real multi-touch event has occured and (2) we've opened an 
+     * for this to happen - (1) if a real multi-touch event has occured and (2) we've opened an
      * extension keyboard.
      */
     private boolean mDisableDisambiguation;
@@ -135,21 +135,19 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
 
-            switch (attr) {
-            case R.styleable.LatinKeyboardBaseView_keyPreviewLayout:
+            if (attr == R.styleable.LatinKeyboardBaseView_keyPreviewLayout) {
                 previewLayout = a.getResourceId(attr, 0);
                 if (previewLayout == R.layout.null_layout) previewLayout = 0;
-                break;
-            case R.styleable.LatinKeyboardBaseView_keyPreviewOffset:
+            }
+            else if (attr == R.styleable.LatinKeyboardBaseView_keyPreviewOffset) {
                 mPreviewOffset = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case R.styleable.LatinKeyboardBaseView_keyPreviewHeight:
+            }
+            else if (attr == R.styleable.LatinKeyboardBaseView_keyPreviewHeight) {
                 mPreviewHeight = a.getDimensionPixelSize(attr, 80);
-                break;
-            case R.styleable.LatinKeyboardBaseView_popupLayout:
+            }
+            else if (attr == R.styleable.LatinKeyboardBaseView_popupLayout) {
                 mPopupLayout = a.getResourceId(attr, 0);
                 if (mPopupLayout == R.layout.null_layout) mPopupLayout = 0;
-                break;
             }
         }
 
@@ -194,7 +192,7 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
     public void setExtensionLayoutResId (int id) {
         mExtensionLayoutResId = id;
     }
-    
+
     @Override
     public void setPreviewEnabled(boolean previewEnabled) {
         if (getKeyboard() == mPhoneKeyboard) {
@@ -462,7 +460,7 @@ public class LatinKeyboardView extends LatinKeyboardBaseView {
             mExtensionPopup.setHeight(keyboard.getHeight());
             mExtensionPopup.setAnimationStyle(-1);
             getLocationInWindow(windowLocation);
-            // TODO: Fix the "- 30". 
+            // TODO: Fix the "- 30".
             mExtension.setPopupOffset(0, -windowLocation[1] - 30);
             mExtensionPopup.showAtLocation(this, 0, 0, -keyboard.getHeight()
                     + windowLocation[1] + this.getPaddingTop());
