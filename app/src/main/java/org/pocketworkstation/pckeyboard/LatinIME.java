@@ -629,6 +629,7 @@ public class LatinIME extends InputMethodService implements
         }
         mUserBigramDictionary = new UserBigramDictionary(this, this,
                 mInputLocale, Suggest.DIC_USER);
+        mSuggest.setEmojiDictionary(EmojiDictionary.INSTANCE);
         mSuggest.setUserBigramDictionary(mUserBigramDictionary);
         mSuggest.setUserDictionary(mUserDictionary);
         //mSuggest.setContactsDictionary(mContactsDictionary);

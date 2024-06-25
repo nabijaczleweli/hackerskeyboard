@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -29,13 +29,13 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * This class loads a dictionary and provides a list of suggestions for a given sequence of 
+ * This class loads a dictionary and provides a list of suggestions for a given sequence of
  * characters. This includes corrections and completions.
  * @hide pending API Council Approval
  */
 public class Suggest implements Dictionary.WordCallback {
 	private static String TAG = "PCKeyboard";
-	
+
     public static final int APPROX_MAX_WORD_LENGTH = 32;
 
     public static final int CORRECTION_NONE = 0;
@@ -62,20 +62,19 @@ public class Suggest implements Dictionary.WordCallback {
     public static final int DIC_USER = 2;
     public static final int DIC_AUTO = 3;
     public static final int DIC_CONTACTS = 4;
+    public static final int DIC_EMOJI = 5;
     // If you add a type of dictionary, increment DIC_TYPE_LAST_ID
-    public static final int DIC_TYPE_LAST_ID = 4;
+    public static final int DIC_TYPE_LAST_ID = 5;
 
     static final int LARGE_DICTIONARY_THRESHOLD = 200 * 1000;
 
     private BinaryDictionary mMainDict;
 
     private Dictionary mUserDictionary;
-
     private Dictionary mAutoDictionary;
-
     private Dictionary mContactsDictionary;
-
     private Dictionary mUserBigramDictionary;
+    private Dictionary mEmojiDictionary;
 
     private int mPrefMaxSuggestions = 12;
 
@@ -164,13 +163,17 @@ public class Suggest implements Dictionary.WordCallback {
     public void setContactsDictionary(Dictionary userDictionary) {
         mContactsDictionary = userDictionary;
     }
-    
+
     public void setAutoDictionary(Dictionary autoDictionary) {
         mAutoDictionary = autoDictionary;
     }
 
     public void setUserBigramDictionary(Dictionary userBigramDictionary) {
         mUserBigramDictionary = userBigramDictionary;
+    }
+
+    public void setEmojiDictionary(Dictionary emojiDictionary) {
+        mEmojiDictionary = emojiDictionary;
     }
 
     /**
@@ -228,7 +231,7 @@ public class Suggest implements Dictionary.WordCallback {
      * @param prevWordForBigram previous word (used only for bigram)
      * @return list of suggestions.
      */
-    public List<CharSequence> getSuggestions(View view, WordComposer wordComposer, 
+    public List<CharSequence> getSuggestions(View view, WordComposer wordComposer,
             boolean includeTypedWordIfValid, CharSequence prevWordForBigram) {
         mHaveCorrection = false;
         mIsFirstCharCapitalized = wordComposer.isFirstCharCapitalized();
@@ -266,6 +269,10 @@ public class Suggest implements Dictionary.WordCallback {
                     mContactsDictionary.getBigrams(wordComposer, prevWordForBigram, this,
                             mNextLettersFrequencies);
                 }
+                if (mEmojiDictionary != null) {
+                    mEmojiDictionary.getBigrams(wordComposer, prevWordForBigram, this,
+                            mNextLettersFrequencies);
+                }
                 if (mMainDict != null) {
                     mMainDict.getBigrams(wordComposer, prevWordForBigram, this,
                             mNextLettersFrequencies);
@@ -294,6 +301,9 @@ public class Suggest implements Dictionary.WordCallback {
             if (mUserDictionary != null || mContactsDictionary != null) {
                 if (mUserDictionary != null) {
                     mUserDictionary.getWords(wordComposer, this, mNextLettersFrequencies);
+                }
+                if (mEmojiDictionary != null) {
+                    mEmojiDictionary.getWords(wordComposer, this, mNextLettersFrequencies);
                 }
                 if (mContactsDictionary != null) {
                     mContactsDictionary.getWords(wordComposer, this, mNextLettersFrequencies);
@@ -387,7 +397,7 @@ public class Suggest implements Dictionary.WordCallback {
         return mHaveCorrection;
     }
 
-    private boolean compareCaseInsensitive(final String mLowerOriginalWord, 
+    private boolean compareCaseInsensitive(final String mLowerOriginalWord,
             final char[] word, final int offset, final int length) {
         final int originalLength = mLowerOriginalWord.length();
         if (originalLength == length && Character.isUpperCase(word[offset])) {
@@ -460,7 +470,7 @@ public class Suggest implements Dictionary.WordCallback {
                 prefMaxSuggestions - pos - 1);
         priorities[pos] = freq;
         int poolSize = mStringPool.size();
-        StringBuilder sb = poolSize > 0 ? (StringBuilder) mStringPool.remove(poolSize - 1) 
+        StringBuilder sb = poolSize > 0 ? (StringBuilder) mStringPool.remove(poolSize - 1)
                 : new StringBuilder(getApproxMaxWordLength());
         sb.setLength(0);
         if (mIsAllUpperCase) {
@@ -510,9 +520,10 @@ public class Suggest implements Dictionary.WordCallback {
         return mMainDict.isValidWord(word)
                 || (mUserDictionary != null && mUserDictionary.isValidWord(word))
                 || (mAutoDictionary != null && mAutoDictionary.isValidWord(word))
-                || (mContactsDictionary != null && mContactsDictionary.isValidWord(word));
+                || (mContactsDictionary != null && mContactsDictionary.isValidWord(word))
+                || (mEmojiDictionary != null && mEmojiDictionary.isValidWord(word));
     }
-    
+
     private void collectGarbage(ArrayList<CharSequence> suggestions, int prefMaxSuggestions) {
         int poolSize = mStringPool.size();
         int garbageSize = suggestions.size();

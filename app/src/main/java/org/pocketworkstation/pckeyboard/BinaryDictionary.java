@@ -163,7 +163,7 @@ public class BinaryDictionary extends Dictionary {
             }
         }
     }
-    
+
     private final void loadDictionary(Context context, int[] resId) {
         InputStream[] is = null;
         is = new InputStream[resId.length];
