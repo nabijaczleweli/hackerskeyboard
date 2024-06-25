@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 OUT=res/values/auto-version.xml
 
@@ -15,12 +15,8 @@ else
 fi
 
 # Create the auto-version file with this version string
-exec > $OUT
-
-cat <<'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Auto-generated file, do not edit -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-EOF
-echo '   <string name="auto_version">'"$Ver"'</string>'
-echo '</resources>'
+printf '%s\n''<?xml version="1.0" encoding="utf-8"?>' \
+              '<!-- Auto-generated file, do not edit -->' \
+              '<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">' \
+              '   <string name="auto_version">'"$Ver"'</string>' \
+              '</resources>' > $OUT
