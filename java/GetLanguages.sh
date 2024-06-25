@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 getLangsForFiles () {
 	echo "en"  # default language
@@ -13,21 +13,14 @@ getLangsForFiles () {
 }
 
 getLangsForDicts () {
-	ls ../Dicts \
-	| sed 's/.*-//; s/.dict//'
+	(cd ../Dicts && printf '%s\n' *) | sed 's/.*-//; s/.dict//'
 }
 
 makeStrings () {
 	Name="$1"
 	shift
 	echo "    private static final String[] $Name = {"
-	echo $(
-		for F in "$@"; do echo "$F"; done \
-		| sort -u
-	) \
-	| sed 's/ /", "/g; s/^/"/; s/$/"/' \
-	| fmt -w 70 \
-	| sed 's/^/        /'
+	printf '        "%s",\n' "$@" | sort -u
 	echo "    };"
 	echo
 }
